@@ -189,10 +189,12 @@ def loop():
         socketio.sleep(0.05)
 
         with lock:
-            if phase == "countdown" and time.time() >= countdown_end:
+            
+if phase == "countdown" and time.time() >= countdown_end:
     print("COMPTE A REBOURS TERMINE")
     phase = "racing"
     countdown_end = 0
+
 
             if phase == "racing":
                 for p in players.values():
