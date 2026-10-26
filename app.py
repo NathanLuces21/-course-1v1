@@ -14,7 +14,7 @@ phase = "waiting"
 countdown_end = 0
 winner = None
 lock = threading.RLock()
-
+loop_started = False
 HTML = """
 <!DOCTYPE html>
 <html lang="fr">
@@ -132,13 +132,20 @@ def send_state():
                       for p in players.values() if p["slot"]==i),None)
                 for i in (0,1)
             ]
-        }
+         ]
     socketio.emit("game_state",data)
-
+def ensure_loop():
+    global loop_started
+    with lock:
+        if loop_started:
+            return
+        loop_started = True
+    socketio.start_background_task(loop)
 @socketio.on("join_game")
 def join(data):
     global phase,countdown_end,winner
     sid=request.sid
+ ensure_loop()
     with lock:
         if data.get("password")!=PASSWORD:
             emit("join_result",{"ok":False,"error":"Mot de passe incorrect"})
@@ -209,7 +216,7 @@ def loop():
 
 
 
-socketio.start_background_task(loop)
+
 
 if __name__=="__main__":
     socketio.run(app,host="0.0.0.0",port=10000)
