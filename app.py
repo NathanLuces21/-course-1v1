@@ -181,20 +181,29 @@ def leave():
         for p in players.values():p.update(x=50.0,right=False)
     send_state()
 
+
 def loop():
-    global phase,winner
+    global phase, winner
+
     while True:
         socketio.sleep(0.05)
+
         with lock:
-            if phase=="countdown" and time.time()>=countdown_end:
-                phase="racing"
-            if phase=="racing":
+            if phase == "countdown" and time.time() >= countdown_end:
+                phase = "racing"
+
+            if phase == "racing":
                 for p in players.values():
                     if p["right"]:
-                        p["x"]=min(790,p["x"]+3)
-                        if p["x"]>=790 and winner is None:
-                            winner=p["name"];phase="finished";break
+                        p["x"] = min(790, p["x"] + 3)
+
+                        if p["x"] >= 790 and winner is None:
+                            winner = p["name"]
+                            phase = "finished"
+                            break
+
         send_state()
+
 
 socketio.start_background_task(loop)
 
