@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "cle-a-changer")
-socketio = SocketIO(app, async_mode="threading")
+socketio = SocketIO(app, async_mode="threading", cors_allowed_origins="*")
 
 PASSWORD = os.environ.get("GAME_PASSWORD", "COURSE2026")
 players = {}
@@ -72,6 +72,20 @@ onkeydown=e=>{if(e.key==="ArrowRight"||e.key.toLowerCase()==="d"){e.preventDefau
 onkeyup=e=>{if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")control(false)};
 onblur=()=>control(false);
 $("restart").onclick=()=>socket.emit("restart_game");
+const mobileRun = $("mobileRun");
+
+mobileRun.addEventListener("pointerdown", e => {
+  e.preventDefault();
+  control(true);
+});
+
+mobileRun.addEventListener("pointerup", e => {
+  e.preventDefault();
+  control(false);
+});
+
+mobileRun.addEventListener("pointercancel", () => control(false));
+mobileRun.addEventListener("contextmenu", e => e.preventDefault());
 socket.on("game_state",d=>{
  state=d;
  $("status").textContent=d.phase==="waiting"?"En attente d'un joueur...":
