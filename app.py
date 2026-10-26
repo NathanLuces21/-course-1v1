@@ -190,6 +190,7 @@ def loop():
 
         with lock:
             if phase == "countdown" and time.time() >= countdown_end:
+    print("COMPTE A REBOURS TERMINE")
     phase = "racing"
     countdown_end = 0
 
