@@ -182,6 +182,7 @@ def leave():
     send_state()
 
 
+
 def loop():
     global phase, winner, countdown_end
 
@@ -189,12 +190,10 @@ def loop():
         socketio.sleep(0.05)
 
         with lock:
-            
-if phase == "countdown" and time.time() >= countdown_end:
-    print("COMPTE A REBOURS TERMINE")
-    phase = "racing"
-    countdown_end = 0
-
+            if phase == "countdown" and time.time() >= countdown_end:
+                print("COMPTE A REBOURS TERMINE")
+                phase = "racing"
+                countdown_end = 0
 
             if phase == "racing":
                 for p in players.values():
@@ -207,6 +206,7 @@ if phase == "countdown" and time.time() >= countdown_end:
                             break
 
         send_state()
+
 
 
 socketio.start_background_task(loop)
