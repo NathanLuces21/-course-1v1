@@ -121,19 +121,27 @@ function draw(){
 def home():
     return render_template_string(HTML)
 
+
 def send_state():
     with lock:
         data = {
             "phase": phase,
-            "countdown": max(0, countdown_end-time.time()),
+            "countdown": max(0, countdown_end - time.time()),
             "winner": winner,
             "players": [
-                next(({"name":p["name"],"x":p["x"]}
-                      for p in players.values() if p["slot"]==i),None)
-                for i in (0,1)
+                next(
+                    (
+                        {"name": p["name"], "x": p["x"]}
+                        for p in players.values()
+                        if p["slot"] == i
+                    ),
+                    None
+                )
+                for i in (0, 1)
             ]
-         ]
-    socketio.emit("game_state",data)
+        }
+    socketio.emit("game_state", data)
+
 def ensure_loop():
     global loop_started
     with lock:
