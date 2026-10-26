@@ -43,7 +43,11 @@ canvas{width:100%;background:#18202d;border-radius:10px}
 <h2 id="status">En attente...</h2>
 <canvas id="track" width="850" height="300"></canvas>
 <p id="scores"></p>
-<p>Maintiens ➡️ ou D pour courir !</p>
+<p>Maintiens le bouton pour courir !</p>
+<button id="mobileRun"
+style="width:90%;height:80px;font-size:24px;touch-action:none;">
+🚀 AVANCER
+</button>
 <button id="restart">Rejouer</button>
 </div>
 </main>
