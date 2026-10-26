@@ -149,12 +149,18 @@ def ensure_loop():
             return
         loop_started = True
     socketio.start_background_task(loop)
+
 @socketio.on("join_game")
 def join(data):
-    global phase,countdown_end,winner
-    sid=request.sid
- ensure_loop()
+    global phase, countdown_end, winner
+    sid = request.sid
+    ensure_loop()
+
     with lock:
+        if data.get("password") != PASSWORD:
+            emit("join_result", {"ok": False, "error": "Mot de passe incorrect"})
+            return
+
         if data.get("password")!=PASSWORD:
             emit("join_result",{"ok":False,"error":"Mot de passe incorrect"})
             return
