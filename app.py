@@ -183,14 +183,15 @@ def leave():
 
 
 def loop():
-    global phase, winner
+    global phase, winner, countdown_end
 
     while True:
         socketio.sleep(0.05)
 
         with lock:
             if phase == "countdown" and time.time() >= countdown_end:
-                phase = "racing"
+    phase = "racing"
+    countdown_end = 0
 
             if phase == "racing":
                 for p in players.values():
